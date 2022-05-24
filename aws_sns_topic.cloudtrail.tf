@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "cloudtrail-publish" {
       aws_sns_topic.cloudtrail.arn
     ]
     principals {
-      type = "AWS"
+      type = "Service"
       identifiers = [
         "cloudtrail.amazonaws.com"
       ]
