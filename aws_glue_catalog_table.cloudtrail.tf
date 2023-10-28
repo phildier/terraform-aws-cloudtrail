@@ -120,11 +120,5 @@ resource "aws_glue_catalog_table" "cloudtrail" {
       }
       serialization_library = "com.amazon.emr.hive.serde.CloudTrailSerde"
     }
-
-    skewed_info {
-      skewed_column_names               = []
-      skewed_column_value_location_maps = {}
-      skewed_column_values              = []
-    }
   }
 }
