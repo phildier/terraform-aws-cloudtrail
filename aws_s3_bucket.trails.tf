@@ -71,12 +71,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "trails" {
   }
 }
 
-
-resource "aws_s3_bucket_acl" "trails" {
-  bucket = aws_s3_bucket.trails.bucket
-  acl    = "private"
-}
-
 resource "aws_s3_bucket_server_side_encryption_configuration" "trails" {
   bucket = aws_s3_bucket.trails.bucket
   rule {
