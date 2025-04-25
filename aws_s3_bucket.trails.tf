@@ -53,6 +53,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "trails" {
   bucket = aws_s3_bucket.trails.id
 
   rule {
+    filter {
+      prefix = ""
+    }
+
     abort_incomplete_multipart_upload {
       days_after_initiation = 7
     }
@@ -60,14 +64,12 @@ resource "aws_s3_bucket_lifecycle_configuration" "trails" {
     id     = "delete after ${var.expiry} days"
 
     expiration {
-      days                         = var.expiry
-      expired_object_delete_marker = false
+      days = var.expiry
     }
 
     noncurrent_version_expiration {
       noncurrent_days = 31
     }
-
   }
 }
 
