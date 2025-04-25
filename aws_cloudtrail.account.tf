@@ -40,7 +40,7 @@ resource "aws_iam_role_policy" "trails" {
 }
 
 data "aws_cloudwatch_log_group" "trails" {
-  name = "${var.log_group_name}"
+  name = var.log_group_name
 }
 
 data "aws_iam_policy_document" "cloudtrail" {
@@ -64,6 +64,19 @@ data "aws_iam_policy_document" "cloudtrail" {
     ]
     resources = [
       aws_sns_topic.cloudtrail.arn
+    ]
+  }
+
+  statement {
+    sid    = "AllowKMS"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
+    ]
+    resources = [
+      aws_kms_key.cloudtrail.arn
     ]
   }
 }
