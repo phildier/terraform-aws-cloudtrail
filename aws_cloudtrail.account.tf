@@ -55,28 +55,4 @@ data "aws_iam_policy_document" "cloudtrail" {
       data.aws_cloudwatch_log_group.trails.arn
     ]
   }
-
-  statement {
-    sid    = "AllowCloudTrailSNSPublish"
-    effect = "Allow"
-    actions = [
-      "sns:Publish",
-    ]
-    resources = [
-      aws_sns_topic.cloudtrail.arn
-    ]
-  }
-
-  statement {
-    sid    = "AllowKMS"
-    effect = "Allow"
-    actions = [
-      "kms:Decrypt",
-      "kms:GenerateDataKey*",
-      "kms:DescribeKey",
-    ]
-    resources = [
-      aws_kms_key.cloudtrail.arn
-    ]
-  }
 }
