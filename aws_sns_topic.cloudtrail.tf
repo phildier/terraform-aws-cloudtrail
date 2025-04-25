@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "cloudtrail_sns_policy" {
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceArn"
-      values   = [aws_cloudtrail.cloudtrail.arn]
+      values   = [aws_cloudtrail.account.arn]
     }
   }
 }
