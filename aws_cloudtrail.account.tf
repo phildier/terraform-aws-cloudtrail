@@ -1,4 +1,3 @@
-
 resource "aws_cloudtrail" "account" {
   name                          = var.trail["name"]
   cloud_watch_logs_role_arn     = aws_iam_role.cloudtrail.arn
@@ -17,52 +16,54 @@ resource "aws_cloudtrail" "account" {
 
 
 resource "aws_iam_role" "cloudtrail" {
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "cloudtrail.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
+  name               = "${var.trail["name"]}-cloudtrail"
+  assume_role_policy = data.aws_iam_policy_document.cloudtrail-assumerole.json
+}
+
+data "aws_iam_policy_document" "cloudtrail-assumerole" {
+  statement {
+    sid    = "AWSCloudTrailAssumeRole201410"
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole",
+    ]
+    principals {
+      type        = "Service"
+      identifiers = ["cloudtrail.amazonaws.com"]
     }
-  ]
-}
-POLICY
+  }
 }
 
-resource "aws_iam_role_policy" "cloudtrail" {
-  role   = aws_iam_role.cloudtrail.name
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-
-      "Sid": "AWSCloudTrailCreateLogStream2014110",
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogStream"
-      ],
-      "Resource": [
-        "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:${var.log_group_name}:log-stream:*"
-      ]
-
-    },
-    {
-      "Sid": "AWSCloudTrailPutLogEvents20141101",
-      "Effect": "Allow",
-      "Action": [
-        "logs:PutLogEvents"
-      ],
-      "Resource": [
-        "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:${var.log_group_name}:log-stream:*"
-      ]
-    }
-  ]
+resource "aws_iam_role_policy" "trails" {
+  role   = aws_iam_role.cloudtrail.id
+  policy = data.aws_iam_policy_document.cloudtrail.json
 }
-POLICY
+
+data "aws_cloudwatch_log_group" "trails" {
+  name = "${var.log_group_name}"
+}
+
+data "aws_iam_policy_document" "cloudtrail" {
+  statement {
+    sid    = "AWSCloudTrailCreateLogStream201410"
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+    ]
+    resources = [
+      data.aws_cloudwatch_log_group.trails.arn
+    ]
+  }
+
+  statement {
+    sid    = "AllowCloudTrailSNSPublish"
+    effect = "Allow"
+    actions = [
+      "sns:Publish",
+    ]
+    resources = [
+      aws_sns_topic.cloudtrail.arn
+    ]
+  }
 }
