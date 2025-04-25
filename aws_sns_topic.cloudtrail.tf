@@ -11,15 +11,15 @@ resource "aws_sns_topic_policy" "cloudtrail" {
 
 data "aws_iam_policy_document" "cloudtrail_sns_policy" {
   statement {
+    sid    = "AllowCloudTrail"
+    effect = "Allow"
     actions = [
-      "sns:Publish"
+      "sns:*"
     ]
-
     principals {
       type        = "AWS"
       identifiers = [aws_iam_role.cloudtrail.arn]
     }
-
     resources = [aws_sns_topic.cloudtrail.arn]
   }
 }
