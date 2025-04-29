@@ -1,7 +1,6 @@
 resource "aws_cloudtrail" "account" {
   name                          = var.trail["name"]
   cloud_watch_logs_role_arn     = aws_iam_role.cloudtrail.arn
-  depends_on                    = [aws_s3_bucket.trails]
   enable_log_file_validation    = true
   enable_logging                = var.enable_logging
   include_global_service_events = var.trail["include_global_service_events"]
@@ -12,6 +11,11 @@ resource "aws_cloudtrail" "account" {
   s3_key_prefix                 = var.trail["s3_key_prefix"]
   sns_topic_name                = aws_sns_topic.cloudtrail.name
   cloud_watch_logs_group_arn    = "${aws_cloudwatch_log_group.trails.arn}:*"
+
+  depends_on = [
+    aws_s3_bucket.trails,
+    aws_sns_topic_policy.cloudtrail,
+  ]
 }
 
 
@@ -52,7 +56,7 @@ data "aws_iam_policy_document" "cloudtrail" {
       "logs:PutLogEvents",
     ]
     resources = [
-      data.aws_cloudwatch_log_group.trails.arn
+      "${data.aws_cloudwatch_log_group.trails.arn}:*",
     ]
   }
 }

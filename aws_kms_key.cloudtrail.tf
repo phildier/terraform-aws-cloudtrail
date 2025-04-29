@@ -22,13 +22,11 @@ resource "aws_kms_key" "cloudtrail" {
             "Principal": {
                 "Service": "cloudtrail.amazonaws.com"
             },
-            "Action": "kms:GenerateDataKey*",
-            "Resource": "*",
-            "Condition": {
-                "StringLike": {
-                    "kms:EncryptionContext:aws:cloudtrail:arn": "arn:aws:cloudtrail:*:${data.aws_caller_identity.current.account_id}:trail/*"
-                }
-            }
+            "Action": [
+              "kms:GenerateDataKey",
+              "kms:Decrypt"
+            ],
+            "Resource": "*"
         },
         {
             "Sid": "Allow CloudTrail to describe key",
