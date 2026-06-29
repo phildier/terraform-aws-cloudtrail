@@ -69,7 +69,6 @@ No modules.
 | [aws_s3_bucket_versioning.trails](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
 | [aws_sns_topic.cloudtrail](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_cloudtrail_service_account.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudtrail_service_account) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
 ## Inputs
@@ -92,7 +91,7 @@ No modules.
 | <a name="output_bucket"></a> [bucket](#output\_bucket) | n/a |
 | <a name="output_kms"></a> [kms](#output\_kms) | n/a |
 | <a name="output_log_group"></a> [log\_group](#output\_log\_group) | n/a |
-| <a name="output_service_account"></a> [service\_account](#output\_service\_account) | n/a |
+| <a name="output_service_account"></a> [service\_account](#output\_service\_account) | CloudTrail service principal. |
 | <a name="output_trail"></a> [trail](#output\_trail) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

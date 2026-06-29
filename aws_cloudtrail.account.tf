@@ -48,7 +48,7 @@ resource "aws_iam_role_policy" "cloudtrail" {
         "logs:CreateLogStream"
       ],
       "Resource": [
-        "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:${var.log_group_name}:log-stream:*"
+        "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:${var.log_group_name}:log-stream:*"
       ]
 
     },
@@ -59,7 +59,7 @@ resource "aws_iam_role_policy" "cloudtrail" {
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:${var.log_group_name}:log-stream:*"
+        "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:${var.log_group_name}:log-stream:*"
       ]
     }
   ]

@@ -1,5 +1,6 @@
 output "service_account" {
-  value = data.aws_cloudtrail_service_account.main
+  description = "CloudTrail service principal."
+  value       = "cloudtrail.amazonaws.com"
 }
 output "trail" {
   value = aws_cloudtrail.account

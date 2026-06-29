@@ -56,8 +56,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "trails" {
     id     = "delete after ${var.expiry} days"
 
     expiration {
-      days                         = var.expiry
-      expired_object_delete_marker = false
+      days = var.expiry
     }
 
     noncurrent_version_expiration {
